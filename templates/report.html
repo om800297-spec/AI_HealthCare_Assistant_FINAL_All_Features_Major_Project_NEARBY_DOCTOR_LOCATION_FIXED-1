@@ -1,0 +1,38 @@
+<!doctype html>
+<html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>PDF Report Analyzer</title>
+<link rel="stylesheet" href="/static/style.css"></head>
+<body>
+<nav><b>🩺 HealthAI</b><a href="/dashboard">Dashboard</a></nav>
+<main class="page narrow">
+<div class="eyebrow">PDF + AI TEXT EXTRACTION</div>
+<h1>Medical Report Analyzer</h1>
+<p class="muted">Upload a PDF report. The system extracts its text, checks configured warning phrases and stores the analysis in your history.</p>
+
+<form method="post" enctype="multipart/form-data" class="card">
+<label>Upload Medical Report PDF</label>
+<input type="file" name="pdf" accept=".pdf,application/pdf">
+<div class="muted" style="margin:4px 0 12px">Maximum size: 10 MB • PDF only</div>
+<div style="text-align:center;margin:8px">— OR —</div>
+<label>Paste report text</label>
+<textarea name="text" placeholder="Paste non-sensitive report text here..."></textarea>
+<button class="btn">📄 Upload & Analyze Report</button>
+</form>
+
+{% if r %}
+<div class="card result">
+<h2>Analysis Complete</h2>
+<p><b>File:</b> {{r.filename}}</p>
+{% if r.pages %}<p><b>Pages:</b> {{r.pages}}</p>{% endif %}
+<p>{{r.summary}}</p>
+<h3>Detected categories</h3>
+{% for f in r.flags %}<span class="tag priority">{{f}}</span>{% else %}<p class="muted">No configured flags detected.</p>{% endfor %}
+<h3>Extracted text preview</h3>
+<pre style="white-space:pre-wrap;max-height:320px;overflow:auto;background:#f6f8fa;padding:14px;border-radius:10px">{{r.text}}</pre>
+</div>
+{% endif %}
+
+<div class="card warning">
+<b>Important:</b> This is an educational text-extraction/flagging demo. It does not diagnose diseases, interpret medical images, or replace a doctor.
+</div>
+</main>
+</body></html>
